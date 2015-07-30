@@ -2,15 +2,23 @@ package com.example.vaadintestgridtree.my;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.everpro.everprotreegrid.container.EverproTreeGridHierarchicalIndexedContainer;
+
 import com.vaadin.data.Container.Hierarchical;
 import com.vaadin.data.Container.Indexed;
+import com.vaadin.data.Container.ItemSetChangeEvent;
+import com.vaadin.data.Container.ItemSetChangeListener;
+import com.vaadin.data.util.AbstractContainer;
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-
-public class GridTreeContainer implements Indexed {
+import com.vaadin.data.Container.*;
+public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier {
 
 	public class GridItem {
 
@@ -24,8 +32,14 @@ public class GridTreeContainer implements Indexed {
 		public Object getId() {
 			return this.itemId;
 		}
+		public void setExpanded(boolean isExpanded) {
+			this.isExpanded=isExpanded;
+		}
 		public boolean isExpanded() {
 			return isExpanded;
+		}
+		public boolean hasChildren() {
+			return !getChildren().isEmpty();
 		}
 		public List<GridItem> getChildren() {
 			return children;
@@ -76,17 +90,82 @@ public class GridTreeContainer implements Indexed {
 	private List<GridItem> visibleItems;
 	private Hierarchical hierachical;
 
+	public void addItemSetChangeListener(Container.ItemSetChangeListener listener) {
+		super.addItemSetChangeListener(listener);
+	}
+	
+    public void removeItemSetChangeListener(Container.ItemSetChangeListener listener) {
+    	super.removeItemSetChangeListener(listener);
+    }
+    @Deprecated
+    public void removeListener(Container.ItemSetChangeListener listener) {
+        removeItemSetChangeListener(listener);
+    }
+    @Deprecated
+    public void addListener(Container.ItemSetChangeListener listener) {
+        addItemSetChangeListener(listener);
+    }
 	public GridTreeContainer(Hierarchical hierachical){
 		this.hierachical = hierachical;
 		allItems = new ArrayList<GridItem>();
 		visibleItems = new ArrayList<GridItem>();
 		init();
 	}
+
+
 	
+	private void expand(Object itemId) {
+		List<GridItem> tmpItems = new ArrayList<GridItem>();
+		visibleItems.forEach(it -> {
+			tmpItems.add(it);
+			// expand item
+				if (it.equals(new GridItem(itemId))) {
+					it.setExpanded(true);
+					hierachical.getChildren(itemId).forEach(child -> {
+						tmpItems.add(new GridItem(child));
+					});
+				}
+			});
+		visibleItems = tmpItems;
+		
+		fireItemSetChange();
+	}
+
+	private void collapse(Object itemId) {
+		List<GridItem> tmpItems = new ArrayList<GridItem>();
+		visibleItems.forEach(it -> {
+			Collection<?> children = hierachical.getChildren(itemId);
+			// collapse item
+				if (it.equals(new GridItem(itemId))) {
+					it.setExpanded(false);
+				}
+				if (!children.contains(it.getId())) {
+					tmpItems.add(it);
+				}
+			});
+		visibleItems = tmpItems;
+		fireItemSetChange();
+	}
+	public void toogleCollapse(Object itemId) {
+		
+		int index=visibleItems.indexOf(new GridItem(itemId));
+		GridItem item=visibleItems.get(index);
+		if(hierachical.hasChildren(itemId)) {
+			if (item.isExpanded()) {
+				collapse(itemId);
+			}
+			else {
+				expand(itemId);
+			}
+		}
+	}
 	private void init() {
-		hierachical.getItemIds().forEach(item->{
-			allItems.add(new GridItem(item));
-			visibleItems.add(new GridItem(item));
+		//store only items of the 0 level (those which don't have parents)
+		hierachical.getItemIds().forEach(it->{
+			if(hierachical.getParent(it)==null) {
+				allItems.add(new GridItem(it));
+				visibleItems.add(new GridItem(it));
+			}
 		});
 	}
 	
@@ -237,7 +316,7 @@ public class GridTreeContainer implements Indexed {
 	@Override
 	public Object getIdByIndex(int index) {
 		if(index>=0 && index<visibleItems.size()) {
-			return visibleItems.get(index);
+			return visibleItems.get(index).getId();
 		}
 		else {
 			return null;

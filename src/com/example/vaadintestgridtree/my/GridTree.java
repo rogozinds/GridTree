@@ -1,5 +1,7 @@
 package com.example.vaadintestgridtree.my;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import me.everpro.everprotreegrid.EverproTreeButtonRenderer;
@@ -36,11 +38,24 @@ public class GridTree extends Grid {
 		setTreeRendererColumn(expandedColumn);
 	}
 
+	private void addExpandColumn(Column col) {
+		List<Object> columns=new ArrayList<Object>();
+		columns.add(col);
+		container.getItemIds().forEach(item->{
+			columns.add(item);
+		});
+		setColumns(columns.toArray());
+		setFrozenColumnCount(1);
+	}
 	private void setTreeRendererColumn(Column col) {
+//		addItemClickListener(e->{
+//			Object itemId=e.getItemId();
+//			container.toogleCollapse(itemId);
+//		});
 		RendererClickListener listener = new ClickableRenderer.RendererClickListener() {
 			public void click(RendererClickEvent event) {
-				Indexed container = getContainerDataSource();
-				Notification.show("Renderer clicked");
+				Object itemId=event.getItemId();
+				container.toogleCollapse(itemId);
 			}
 		};
 		col.setRenderer(new ButtonRenderer(listener));//, new GridTreeConverter()
