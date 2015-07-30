@@ -3,6 +3,7 @@ package com.example.vaadintestgridtree.my;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import me.everpro.everprotreegrid.EverproTreeButtonRenderer;
 import me.everpro.everprotreegrid.container.EverproTreeGridHierarchicalIndexedContainer;
@@ -24,8 +25,7 @@ public class GridTree extends Grid {
 
 	Column expandedColumn;
 	GridTreeContainer container;
-	public final static String EXPAND_COLUMN_ID = "COLUMN_ID";
-
+	public static final String EXPAND_COLUMN_ID = "COLUMN_ID";
 	private void buildGridTreeContainer(Hierarchical hContainer) {
 		container=new GridTreeContainer(hContainer);
 	}
@@ -34,26 +34,45 @@ public class GridTree extends Grid {
 		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, String.class, "");
 		buildGridTreeContainer(hContainer);
 		super.setContainerDataSource(container);
-		expandedColumn = getColumn(EXPAND_COLUMN_ID);
+		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		setTreeRendererColumn(expandedColumn);
+		createCellGenerator();
 	}
 
-	private void addExpandColumn(Column col) {
-		List<Object> columns=new ArrayList<Object>();
-		columns.add(col);
-		container.getItemIds().forEach(item->{
-			columns.add(item);
-		});
-		setColumns(columns.toArray());
-		setFrozenColumnCount(1);
-	}
+
 	private void setTreeRendererColumn(Column col) {
-		RendererClickListener listener = new ClickableRenderer.RendererClickListener() {
-			public void click(RendererClickEvent event) {
+		container.getItemIds().forEach(id->{
+			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(id);
+		});
+		
+		addItemClickListener(event->{
+			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
 				Object itemId=event.getItemId();
 				container.toogleCollapse(itemId);
 			}
-		};
-		col.setRenderer(new ButtonRenderer(listener));//, new GridTreeConverter()
+		});
+		col.setConverter(new GridTreeConverter());
+	}
+	private void createCellGenerator () {
+	    this.setCellStyleGenerator(generator -> {
+	    	if(EXPAND_COLUMN_ID.equals(generator.getPropertyId())) {
+	    		Object propertyId=GridTree.EXPAND_COLUMN_ID;
+	            Object itemId = (Object)generator.getItem().getItemProperty(propertyId).getValue();
+	            boolean hasChildren=container.hasChildren(itemId);
+	            boolean isExpanded=container.isItemExpanded(itemId);
+	            if(hasChildren) {
+		            if(isExpanded) {
+		                return "v-tree-grid-node "+"expanded";
+		            } else {
+		                return "v-tree-grid-node "+"collapsed";
+		            }
+	            }
+	            else {
+	            	return null;
+	            }
+	        }else {
+	            return null;
+	        }
+	    });
 	}
 }

@@ -12748,3 +12748,21 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.vaadintestgridtree .v-tree-grid-node {
+	background-color: red;
+}
+
+.vaadintestgridtree .v-tree-grid-node::before {
+	display: inline-block;
+	padding-right: 4px;
+	font-family: FontAwesome;
+}
+
+.vaadintestgridtree .v-tree-grid-node.expanded::before {
+	content: "\f0d7";
+}
+
+.vaadintestgridtree .v-tree-grid-node.collapsed::before {
+	content: "\f0da";
+}

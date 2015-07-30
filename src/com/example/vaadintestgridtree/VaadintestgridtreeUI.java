@@ -87,5 +87,6 @@ public class VaadintestgridtreeUI extends UI {
 		container.setParent("010", "01");
 		container.setParent("011", "01");
 		grid= new GridTree(container);
+		grid.setColumnReorderingAllowed(true);
 	}
 }
