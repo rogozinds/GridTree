@@ -48,10 +48,6 @@ public class GridTree extends Grid {
 		setFrozenColumnCount(1);
 	}
 	private void setTreeRendererColumn(Column col) {
-//		addItemClickListener(e->{
-//			Object itemId=e.getItemId();
-//			container.toogleCollapse(itemId);
-//		});
 		RendererClickListener listener = new ClickableRenderer.RendererClickListener() {
 			public void click(RendererClickEvent event) {
 				Object itemId=event.getItemId();
