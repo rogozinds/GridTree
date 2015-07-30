@@ -32,5 +32,20 @@
 @mixin vaadintestgridtree {
   @include valo;
 
-  // Insert your own theme rules here
+  	.v-tree-grid-node {
+  		/* position: relative; */
+		background-color:red;  		
+	 	&::before {
+	 		display: inline-block;
+	 		padding-right: 4px;
+	 		font-family: FontAwesome;
+	 	}
+	 	&.expanded::before{
+			content: '\f0d7';
+		}
+		&.collapsed::before{
+			content: "\f0da";
+  			
+		}
+  	}
 }

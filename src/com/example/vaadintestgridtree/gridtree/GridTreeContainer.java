@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.my;
+package com.example.vaadintestgridtree.gridtree;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,12 @@
 /* This file is automatically managed and will be overwritten from time to time. */
 /* Do not manually edit this file. */
 
+/* Provided by everprotreegrid-0.1.0.jar */
+@import "../../../VAADIN/themes/everprotreegrid/everprotreegridaddons.scss";
+
+
 /* Import and include this mixin into your project theme to include the addon themes */
 @mixin addons {
+	@include everprotreegridaddons;
 }
 

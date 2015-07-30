@@ -7,8 +7,8 @@ import javax.servlet.annotation.WebServlet;
 
 import me.everpro.everprotreegrid.EverproTreeGrid;
 
+import com.example.vaadintestgridtree.gridtree.GridTree;
 import com.example.vaadintestgridtree.models.DataObject;
-import com.example.vaadintestgridtree.my.GridTree;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container.Hierarchical;
@@ -41,13 +41,6 @@ public class VaadintestgridtreeUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
-		Button button = new Button("Click Me");
-		button.addClickListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				layout.addComponent(new Label("Thank you for clicking"));
-			}
-		});
-		layout.addComponent(button);
 		initObjects();
 		layout.addComponent(grid);
 		
@@ -87,5 +80,6 @@ public class VaadintestgridtreeUI extends UI {
 		container.setParent("010", "01");
 		container.setParent("011", "01");
 		grid= new GridTree(container);
+		grid.setColumnReorderingAllowed(true);
 	}
 }
