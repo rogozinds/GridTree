@@ -34,16 +34,10 @@ public class GridTree extends Grid {
 		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, String.class, "");
 		buildGridTreeContainer(hContainer);
 		super.setContainerDataSource(container);
+		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
-		setTreeRendererColumn(expandedColumn);
+		expandedColumn.setConverter(new GridTreeConverter());
 		createCellGenerator();
-	}
-
-
-	private void setTreeRendererColumn(Column col) {
-		container.getItemIds().forEach(id->{
-			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(id);
-		});
 		
 		addItemClickListener(event->{
 			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
@@ -51,7 +45,11 @@ public class GridTree extends Grid {
 				container.toogleCollapse(itemId);
 			}
 		});
-		col.setConverter(new GridTreeConverter());
+	}
+	private void saveItemIdsInGrid(){
+		container.getItemIds().forEach(id->{
+			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(id);
+		});	
 	}
 	private void createCellGenerator () {
 	    this.setCellStyleGenerator(generator -> {
