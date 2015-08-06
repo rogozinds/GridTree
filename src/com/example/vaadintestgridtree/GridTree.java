@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import me.everpro.everprotreegrid.EverproTreeButtonRenderer;
-import me.everpro.everprotreegrid.container.EverproTreeGridHierarchicalIndexedContainer;
-
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Property;
@@ -38,17 +35,22 @@ public class GridTree extends Grid {
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		expandedColumn.setConverter(new GridTreeConverter());
-//		createCellGenerator();
-		
-//		addItemClickListener(event->{
-//			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
-//				Object itemId=event.getItemId();
-//				container.toogleCollapse(itemId);
-//			}
-//		});
+		addExpandColumnRenderer(expandedColumn);
+////		createCellGenerator();
+//		
+////		addItemClickListener(event->{
+////			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
+////				Object itemId=event.getItemId();
+////				container.toogleCollapse(itemId);
+////			}
+////		});
 	}
 	private void addExpandColumnRenderer(Column column) {
 		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(Object.class);
+		renderer.addClickListener(e->{
+			Object itemId=e.getItemId();
+			container.toogleCollapse(itemId);
+		});
 		column.setRenderer(renderer);
 	}
 	private void saveItemIdsInGrid(){
@@ -78,8 +80,5 @@ public class GridTree extends Grid {
 //	        }
 //	    });
 //	}
-	@Override
-	public GridTreeContainer getContainerDataSource() {
-		return container;
-	}
+
 }

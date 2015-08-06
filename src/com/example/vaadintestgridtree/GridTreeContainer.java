@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import me.everpro.everprotreegrid.container.EverproTreeGridHierarchicalIndexedContainer;
-
 import com.vaadin.data.Container.Hierarchical;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Container.ItemSetChangeEvent;

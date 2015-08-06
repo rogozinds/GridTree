@@ -18,7 +18,7 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<Object> {
 	@Override
     public JsonValue encode(Object itemId) {
     	GridTree tree=(GridTree)getParent();
-    	GridTreeContainer container = tree.getContainerDataSource();
+    	GridTreeContainer container = (GridTreeContainer)tree.getContainerDataSource();
         Boolean isExpanded=container.isItemExpanded(itemId);
         return super.encode(isExpanded, Boolean.class);
     }

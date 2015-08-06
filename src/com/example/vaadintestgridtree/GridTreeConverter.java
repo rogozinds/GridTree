@@ -18,7 +18,7 @@ public class GridTreeConverter implements Converter<String, Object> {
 	public String convertToPresentation(Object value,
 			Class<? extends String> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
-		return "";
+		return value.toString();
 	}
 	@Override
 	public Class<Object> getModelType() {

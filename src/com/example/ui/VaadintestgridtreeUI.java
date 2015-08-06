@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 
-import me.everpro.everprotreegrid.EverproTreeGrid;
-
 import com.example.vaadintestgridtree.GridTree;
 import com.example.vaadintestgridtree.models.DataObject;
 import com.vaadin.annotations.Theme;
@@ -29,7 +27,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("vaadintestgridtree")
 public class VaadintestgridtreeUI extends UI {
 	List<DataObject> objects=new ArrayList<DataObject>();
-	GridTree grid;
+	Grid grid;
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = VaadintestgridtreeUI.class, widgetset = "com.example.vaadintestgridtree.widgetset.VaadintestgridtreeWidgetset")
 	public static class Servlet extends VaadinServlet {

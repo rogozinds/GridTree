@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.gridtree.treenoderenderer.client;
+package com.example.vaadintestgridtree.widgetset.client;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.client.connectors.ClickableRendererConnector;
