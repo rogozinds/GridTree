@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree;
+package com.example.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import me.everpro.everprotreegrid.EverproTreeGrid;
 
-import com.example.vaadintestgridtree.gridtree.GridTree;
+import com.example.vaadintestgridtree.GridTree;
 import com.example.vaadintestgridtree.models.DataObject;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;

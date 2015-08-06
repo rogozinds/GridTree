@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.gridtree;
+package com.example.vaadintestgridtree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import java.util.Optional;
 import me.everpro.everprotreegrid.EverproTreeButtonRenderer;
 import me.everpro.everprotreegrid.container.EverproTreeGridHierarchicalIndexedContainer;
 
+import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Property;
 import com.vaadin.data.Container.Hierarchical;
@@ -37,40 +38,48 @@ public class GridTree extends Grid {
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		expandedColumn.setConverter(new GridTreeConverter());
-		createCellGenerator();
+//		createCellGenerator();
 		
-		addItemClickListener(event->{
-			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
-				Object itemId=event.getItemId();
-				container.toogleCollapse(itemId);
-			}
-		});
+//		addItemClickListener(event->{
+//			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
+//				Object itemId=event.getItemId();
+//				container.toogleCollapse(itemId);
+//			}
+//		});
+	}
+	private void addExpandColumnRenderer(Column column) {
+		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(Object.class);
+		column.setRenderer(renderer);
 	}
 	private void saveItemIdsInGrid(){
 		container.getItemIds().forEach(id->{
 			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(id);
 		});	
 	}
-	private void createCellGenerator () {
-	    this.setCellStyleGenerator(generator -> {
-	    	if(EXPAND_COLUMN_ID.equals(generator.getPropertyId())) {
-	    		Object propertyId=GridTree.EXPAND_COLUMN_ID;
-	            Object itemId = (Object)generator.getItem().getItemProperty(propertyId).getValue();
-	            boolean hasChildren=container.hasChildren(itemId);
-	            boolean isExpanded=container.isItemExpanded(itemId);
-	            if(hasChildren) {
-		            if(isExpanded) {
-		                return "v-tree-grid-node "+"expanded";
-		            } else {
-		                return "v-tree-grid-node "+"collapsed";
-		            }
-	            }
-	            else {
-	            	return null;
-	            }
-	        }else {
-	            return null;
-	        }
-	    });
+//	private void createCellGenerator () {
+//	    this.setCellStyleGenerator(generator -> {
+//	    	if(EXPAND_COLUMN_ID.equals(generator.getPropertyId())) {
+//	    		Object propertyId=GridTree.EXPAND_COLUMN_ID;
+//	            Object itemId = (Object)generator.getItem().getItemProperty(propertyId).getValue();
+//	            boolean hasChildren=container.hasChildren(itemId);
+//	            boolean isExpanded=container.isItemExpanded(itemId);
+//	            if(hasChildren) {
+//		            if(isExpanded) {
+//		                return "v-tree-grid-node "+"expanded";
+//		            } else {
+//		                return "v-tree-grid-node "+"collapsed";
+//		            }
+//	            }
+//	            else {
+//	            	return null;
+//	            }
+//	        }else {
+//	            return null;
+//	        }
+//	    });
+//	}
+	@Override
+	public GridTreeContainer getContainerDataSource() {
+		return container;
 	}
 }
