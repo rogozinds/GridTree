@@ -75,18 +75,33 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		fireItemSetChange();
 	}
 	
+	private void collapseSelfAndChildren(Object itemId,boolean removeSelf) {
+		if (removeSelf) {
+			visibleItems.remove(itemId);
+		}
+		if(hierachical.hasChildren(itemId)) {
+			hierachical.getChildren(itemId).forEach(child->{
+				collapseSelfAndChildren(child,true);
+			});
+		}
+	}
 	private void collapse(Object itemId) {
+		collapseSelfAndChildren(itemId,false);
 		List<Object> tmpItems = new ArrayList<Object>();
 		visibleItems.forEach(it -> {
+			if (it.equals(itemId)) {
+				expandedItems.remove(it);
+			}
+			if (hierachical.hasChildren(itemId)) {
 			Collection<?> children = hierachical.getChildren(itemId);
 			// collapse item
-				if (it.equals(itemId)) {
-					expandedItems.remove(it);
-				}
+
 				if (!children.contains(it)) {
 					tmpItems.add(it);
 				}
-			});
+			}
+		});
+		
 		visibleItems = tmpItems;
 		fireItemSetChange();
 	}
