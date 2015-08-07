@@ -1,5 +1,6 @@
-package com.example.vaadintestgridtree.gridtree.treenoderenderer;
+	package com.example.vaadintestgridtree.gridtree.treenoderenderer;
 
+import com.example.vaadintestgridtree.CellWrapper;
 import com.example.vaadintestgridtree.GridTree;
 import com.example.vaadintestgridtree.GridTreeContainer;
 import com.vaadin.data.Container.Hierarchical;
@@ -8,18 +9,18 @@ import com.vaadin.ui.renderers.ClickableRenderer;
 
 import elemental.json.JsonValue;
 
-public class TreeNodeExpandButtonRenderer extends ClickableRenderer<Object> {
+public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper> {
 
 
-    public TreeNodeExpandButtonRenderer(Class<Object> presentationType) {
+    public TreeNodeExpandButtonRenderer(Class<CellWrapper> presentationType) {
 		super(presentationType);
 	}
 
 	@Override
-    public JsonValue encode(Object itemId) {
+    public JsonValue encode(CellWrapper value) {
     	GridTree tree=(GridTree)getParent();
     	GridTreeContainer container = (GridTreeContainer)tree.getContainerDataSource();
-        Boolean isExpanded=container.isItemExpanded(itemId);
-        return super.encode(isExpanded, Boolean.class);
+        Boolean isExpanded=value.isExpanded();
+        return super.encode(value, CellWrapper.class);
     }
 }

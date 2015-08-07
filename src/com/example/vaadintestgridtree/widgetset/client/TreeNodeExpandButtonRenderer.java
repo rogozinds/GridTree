@@ -1,13 +1,15 @@
 package com.example.vaadintestgridtree.widgetset.client;
 
+import com.example.vaadintestgridtree.CellWrapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTML;
 import com.vaadin.client.renderers.ClickableRenderer;
 import com.vaadin.client.widget.grid.RendererCellReference;
+import com.vaadin.ui.Grid;
 
 import elemental.json.JsonObject;
 
-public class TreeNodeExpandButtonRenderer extends ClickableRenderer<Boolean, HTML> {
+public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper, HTML> {
 
 	@Override
 	public HTML createWidget() {
@@ -17,12 +19,16 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<Boolean, HTM
 	}
 
 	@Override
-	public void render(RendererCellReference cell, Boolean expanded, HTML widget) {
-		// get row and col from client side
-       // String rowKey = getRowKey((JsonObject) cell.getRow());
-       // String columnId = getColumnId(cell.getColumn());
-	   //	int int=cell.getRowIndex();
-		widget.setHTML(expanded ? "v" : ">");
+	public void render(RendererCellReference cell, CellWrapper cellValue, HTML widget) {
+		String html="+"+cellValue.getValue();
+		if(cellValue.hasChildren()) {
+			if(cellValue.isExpanded()) {
+				html+="v";
+			} else {
+				html+=">";
+			}
+		}
+		widget.setHTML(html);
 	}
 
 }

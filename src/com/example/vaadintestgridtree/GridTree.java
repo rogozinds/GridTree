@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Property;
@@ -27,26 +28,21 @@ public class GridTree extends Grid {
 	private void buildGridTreeContainer(Hierarchical hContainer) {
 		container=new GridTreeContainer(hContainer);
 	}
+
 	public GridTree(HierarchicalContainer hContainer) {
 		super();
-		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, String.class, "");
+		CellWrapper defValue=new CellWrapper("bar", "0", false, false);
+		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, CellWrapper.class, defValue);
 		buildGridTreeContainer(hContainer);
 		super.setContainerDataSource(container);
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		expandedColumn.setConverter(new GridTreeConverter());
 		addExpandColumnRenderer(expandedColumn);
-////		createCellGenerator();
-//		
-////		addItemClickListener(event->{
-////			if(event.getPropertyId().equals(EXPAND_COLUMN_ID)) {
-////				Object itemId=event.getItemId();
-////				container.toogleCollapse(itemId);
-////			}
-////		});
+
 	}
 	private void addExpandColumnRenderer(Column column) {
-		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(Object.class);
+		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(CellWrapper.class);
 		renderer.addClickListener(e->{
 			Object itemId=e.getItemId();
 			container.toogleCollapse(itemId);
@@ -55,7 +51,12 @@ public class GridTree extends Grid {
 	}
 	private void saveItemIdsInGrid(){
 		container.getItemIds().forEach(id->{
-			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(id);
+			
+			String value = "foo";
+			Boolean hasChildren=container.hasChildren(id);
+			Boolean isExpanded=container.isItemExpanded(id);
+			CellWrapper cw=new CellWrapper(value, id, hasChildren, isExpanded);
+			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(cw);
 		});	
 	}
 //	private void createCellGenerator () {
