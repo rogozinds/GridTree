@@ -1,6 +1,5 @@
 package com.example.vaadintestgridtree.widgetset.client;
 
-import com.example.vaadintestgridtree.CellWrapper;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.client.connectors.ClickableRendererConnector;
 import com.vaadin.client.renderers.ClickableRenderer.RendererClickHandler;
@@ -10,7 +9,7 @@ import elemental.json.JsonObject;
 
 @Connect(com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer.class)
 public class TreeNodeExpandButtonRendererConnector extends
-		ClickableRendererConnector<CellWrapper> {
+		ClickableRendererConnector<String> {
 
     @Override
     public TreeNodeExpandButtonRenderer getRenderer() {

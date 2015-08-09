@@ -1,24 +1,10 @@
 package com.example.vaadintestgridtree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
-
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
-import com.vaadin.data.Container.Indexed;
-import com.vaadin.data.Property;
+import com.example.vaadintestgridtree.widgetset.shared.CellWrapper;
 import com.vaadin.data.Container.Hierarchical;
 import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.renderers.ButtonRenderer;
-import com.vaadin.ui.renderers.ClickableRenderer;
-import com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent;
-import com.vaadin.ui.renderers.ClickableRenderer.RendererClickListener;
 
 public class GridTree extends Grid {
 
@@ -31,20 +17,23 @@ public class GridTree extends Grid {
 
 	public GridTree(HierarchicalContainer hContainer) {
 		super();
-		CellWrapper defValue=new CellWrapper("bar", "0", false, false);
+		CellWrapper defValue=new CellWrapper("bar", "0", false, false,0);
 		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, CellWrapper.class, defValue);
 		buildGridTreeContainer(hContainer);
 		super.setContainerDataSource(container);
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
-		expandedColumn.setConverter(new GridTreeConverter());
+		//expandedColumn.setConverter(new GridTreeConverter());
 		addExpandColumnRenderer(expandedColumn);
 
 	}
 	private void addExpandColumnRenderer(Column column) {
+		
 		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(CellWrapper.class);
 		renderer.addClickListener(e->{
 			Object itemId=e.getItemId();
+			CellWrapper cw=(CellWrapper) container.getItem(itemId).getItemProperty(EXPAND_COLUMN_ID).getValue();
+			cw.setIsExpanded(!cw.isExpanded());
 			container.toogleCollapse(itemId);
 		});
 		column.setRenderer(renderer);
@@ -52,10 +41,11 @@ public class GridTree extends Grid {
 	private void saveItemIdsInGrid(){
 		container.getItemIds().forEach(id->{
 			
-			String value = "foo";
+			String value = id.toString();
 			Boolean hasChildren=container.hasChildren(id);
 			Boolean isExpanded=container.isItemExpanded(id);
-			CellWrapper cw=new CellWrapper(value, id, hasChildren, isExpanded);
+			Integer level=container.getLevel(id);
+			CellWrapper cw=new CellWrapper(value, id, hasChildren, isExpanded,level);
 			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(cw);
 		});	
 	}

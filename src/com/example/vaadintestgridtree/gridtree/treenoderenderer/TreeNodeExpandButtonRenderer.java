@@ -1,10 +1,7 @@
 	package com.example.vaadintestgridtree.gridtree.treenoderenderer;
 
-import com.example.vaadintestgridtree.CellWrapper;
-import com.example.vaadintestgridtree.GridTree;
-import com.example.vaadintestgridtree.GridTreeContainer;
-import com.vaadin.data.Container.Hierarchical;
-import com.vaadin.data.util.HierarchicalContainer;
+import com.example.vaadintestgridtree.widgetset.shared.CellWrapper;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.renderers.ClickableRenderer;
 
 import elemental.json.JsonValue;
@@ -18,9 +15,19 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper>
 
 	@Override
     public JsonValue encode(CellWrapper value) {
-    	GridTree tree=(GridTree)getParent();
-    	GridTreeContainer container = (GridTreeContainer)tree.getContainerDataSource();
-        Boolean isExpanded=value.isExpanded();
-        return super.encode(value, CellWrapper.class);
+    	String cellValue=value.getValue();
+    	String caretDown=FontAwesome.CARET_DOWN.getHtml();
+    	String caretRight=FontAwesome.CARET_RIGHT.getHtml();
+    	if(value.hasChildren()) {
+    		if(value.isExpanded()){
+    			cellValue=caretDown+" "+value.getValue();
+    		}
+    		else {
+    			cellValue=caretRight+" "+value.getValue();
+    		}
+    	}
+    	final int INTEND = 19;
+		cellValue=cellValue+"DELIM;1"+INTEND*value.getLevel();
+        return super.encode(cellValue, String.class);
     }
 }

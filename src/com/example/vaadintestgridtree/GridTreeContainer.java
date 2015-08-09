@@ -2,22 +2,16 @@ package com.example.vaadintestgridtree;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.vaadin.data.Container.Hierarchical;
-import com.vaadin.data.Container.Indexed;
-import com.vaadin.data.Container.ItemSetChangeEvent;
-import com.vaadin.data.Container.ItemSetChangeListener;
-import com.vaadin.data.util.AbstractContainer;
 import com.vaadin.data.Container;
+import com.vaadin.data.Container.Indexed;
+import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.Container.*;
+import com.vaadin.data.util.AbstractContainer;
 public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier {
 
 	
@@ -48,6 +42,24 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	public boolean hasChildren(Object itemId) {
 		return hierachical.hasChildren(itemId);
 	}
+	/**
+	 * Returns level of the item starting from 0.
+	 * @param itemId
+	 * @return level of the item starting from 0.
+	 */
+	public int getLevel(Object itemId) {
+		return getLevel(itemId,0);
+	}
+	private int getLevel(Object itemId,int levelIter) {
+		Object parent=hierachical.getParent(itemId);
+		if(parent==null) {
+			return levelIter;
+		}
+		else {
+			return getLevel(parent,++levelIter);
+		}
+	}
+
 	/**
 	 * 
 	 * @param itemId
@@ -115,18 +127,22 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		});
 	}
 	
+	@Override
 	public void addItemSetChangeListener(Container.ItemSetChangeListener listener) {
 		super.addItemSetChangeListener(listener);
 	}
 	
-    public void removeItemSetChangeListener(Container.ItemSetChangeListener listener) {
+    @Override
+	public void removeItemSetChangeListener(Container.ItemSetChangeListener listener) {
     	super.removeItemSetChangeListener(listener);
     }
-    @Deprecated
+    @Override
+	@Deprecated
     public void removeListener(Container.ItemSetChangeListener listener) {
         removeItemSetChangeListener(listener);
     }
-    @Deprecated
+    @Override
+	@Deprecated
     public void addListener(Container.ItemSetChangeListener listener) {
         addItemSetChangeListener(listener);
     }

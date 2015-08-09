@@ -67,4 +67,11 @@ public class ContainerTest {
 		//collapseing top parent row should have collapse all its children
 		Assert.assertEquals(1, tc.size());
 	}
+	
+	@Test
+	public void testGetLevel() {
+		Assert.assertEquals(0,tc.getLevel("0"));
+		Assert.assertEquals(1,tc.getLevel("01"));
+		Assert.assertEquals(2,tc.getLevel("010"));
+	}
 }
