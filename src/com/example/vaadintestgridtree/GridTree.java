@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
-import com.example.vaadintestgridtree.widgetset.shared.CellWrapper;
+import com.example.vaadintestgridtree.widgetset.client.CellWrapper;
 import com.vaadin.data.Container.Hierarchical;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Grid;

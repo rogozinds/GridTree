@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.widgetset.shared;
+package com.example.vaadintestgridtree.widgetset.client;
 
 import java.io.Serializable;
 
@@ -36,7 +36,9 @@ public void setHasChildren(Boolean hasChildren) {
 	Boolean isExpanded;
 	Integer level;
 	
-	
+	public CellWrapper() {
+		
+	}
 	public CellWrapper(String value,Object itemId, Boolean hasChildren, Boolean isExpanded,Integer level) {
 		super();
 		this.value = value;

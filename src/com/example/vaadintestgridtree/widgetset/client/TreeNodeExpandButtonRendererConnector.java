@@ -9,7 +9,7 @@ import elemental.json.JsonObject;
 
 @Connect(com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer.class)
 public class TreeNodeExpandButtonRendererConnector extends
-		ClickableRendererConnector<String> {
+		ClickableRendererConnector<CellWrapper> {
 
     @Override
     public TreeNodeExpandButtonRenderer getRenderer() {

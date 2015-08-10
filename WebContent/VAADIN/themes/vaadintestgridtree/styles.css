@@ -1,3 +1,5 @@
+@import "../../../VAADIN/themes/everprotreegrid/everprotreegridaddons.scss";
+
 /**
  * Checks if a list contains a certain value.
  * 
@@ -945,7 +947,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "7.5.2";
+	content: "7.5.3";
 }
 
 .v-widget {
@@ -12747,10 +12749,6 @@ div.v-layout.v-horizontal.v-widget {
 	display: inline-block;
 	width: 19px;
 	overflow: hidden;
-}
-
-.vaadintestgridtree .v-tree-grid-node {
-	background-color: red;
 }
 
 .vaadintestgridtree .v-tree-grid-node::before {

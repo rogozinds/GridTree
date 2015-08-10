@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.vaadin.client.renderers.ClickableRenderer;
 import com.vaadin.client.widget.grid.RendererCellReference;
 
-public class TreeNodeExpandButtonRenderer extends ClickableRenderer<String, HTML> {
+public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper, HTML> {
 
 	@Override
 	public HTML createWidget() {
@@ -15,11 +15,25 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<String, HTML
 	}
 
 	@Override
-	public void render(RendererCellReference cell, String cellValue, HTML widget) {
-		String[] values = cellValue.split("DELIM;1");
-		String html=values[0];
-		String intend=values[1];
-		widget.setHTML(html);
+	public void render(RendererCellReference cell, CellWrapper cellValue, HTML widget) {
+		final int INTEND_IN_PIXELS = 19;
+    	String value="";
+    	if(cellValue.hasChildren()) {
+    		if(!widget.getElement().getClassName().contains("v-tree-grid-node")) {
+    			widget.getElement().addClassName("v-tree-grid-node");
+    		}
+    		if(cellValue.isExpanded()){
+    			widget.getElement().removeClassName("collapsed");
+    			widget.getElement().addClassName("expanded");
+    		}
+    		else {
+    			widget.getElement().removeClassName("expanded");
+    			widget.getElement().addClassName("collapsed");
+    		}
+    	}
+    	
+		int intend=INTEND_IN_PIXELS*cellValue.getLevel();
+		widget.setHTML(value);
 		widget.getElement().getStyle().setProperty("padding-left", intend+"px");
 	}
 
