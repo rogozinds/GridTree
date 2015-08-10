@@ -27,7 +27,6 @@ public class GridTree extends Grid {
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		expandedColumn.setHeaderCaption("");
-		expandedColumn.setMinimumWidth(5.0);
 		addExpandColumnRenderer(expandedColumn);
 		reorderColumns();
 	}
@@ -46,9 +45,11 @@ public class GridTree extends Grid {
 		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(CellWrapper.class);
 		renderer.addClickListener(e->{
 			Object itemId=e.getItemId();
-			CellWrapper cw=(CellWrapper) container.getItem(itemId).getItemProperty(EXPAND_COLUMN_ID).getValue();
-			cw.setIsExpanded(!cw.isExpanded());
-			container.toogleCollapse(itemId);
+			List<Object>changedItems=container.toogleCollapse(itemId);
+			changedItems.forEach(it->{
+				CellWrapper cw=(CellWrapper) container.getItem(it).getItemProperty(EXPAND_COLUMN_ID).getValue();
+				cw.setIsExpanded(container.isItemExpanded(it));
+			});
 		});
 		column.setRenderer(renderer);
 	}

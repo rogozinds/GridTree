@@ -1,5 +1,8 @@
 package com.example.vaadintestgridtree;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +71,26 @@ public class ContainerTest {
 		Assert.assertEquals(1, tc.size());
 	}
 	
+	@Test
+	public void testToogleCollapseTwoTimes() {
+
+		tc.toogleCollapse("0");
+		tc.toogleCollapse("01");
+		tc.toogleCollapse("0");
+		tc.toogleCollapse("0");
+		tc.toogleCollapse("01");
+		//collapsing top parent row should have collapse all its children
+		Assert.assertEquals(5, tc.size());
+	}
+	//Test toogleCollapse method return changed item ids
+	@Test
+	public void testToogleCollapseReturnValue() {
+		tc.toogleCollapse("0");
+		tc.toogleCollapse("01");
+		List<Object> changedItems=tc.toogleCollapse("0");
+		List<Object> expectedItemsChanged= Arrays.asList("0","01");
+		Assert.assertEquals("Items changed",expectedItemsChanged,changedItems);
+	}
 	@Test
 	public void testGetLevel() {
 		Assert.assertEquals(0,tc.getLevel("0"));

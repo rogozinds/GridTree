@@ -30,6 +30,10 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper,
     			widget.getElement().removeClassName("expanded");
     			widget.getElement().addClassName("collapsed");
     		}
+    	} else {
+    		widget.getElement().removeClassName("v-tree-grid-node");
+    		widget.getElement().removeClassName("collapsed");
+    		widget.getElement().removeClassName("expanded");
     	}
     	
 		int intend=INTEND_IN_PIXELS*cellValue.getLevel();

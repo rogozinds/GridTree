@@ -28,15 +28,23 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 
 
 	// This should be package visibility - for now public, not to loose time for solving visibility problems.
-	public void toogleCollapse(Object itemId) {
+	/**
+	 * Toogle the expand/collapse for item
+	 * @param itemId
+	 * @return list of changed item ids
+	 */
+	public List<Object> toogleCollapse(Object itemId) {
+		List<Object> changedItems=new ArrayList<Object>();
 		if(hierachical.hasChildren(itemId)) {
 			if (isItemExpanded(itemId)) {
-				collapse(itemId);
+				changedItems=collapse(itemId);
 			}
 			else {
 				expand(itemId);
+				changedItems.add(itemId);
 			}
 		}
+		return changedItems;
 	}
 	
 	public boolean hasChildren(Object itemId) {
@@ -87,35 +95,25 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		fireItemSetChange();
 	}
 	
-	private void collapseSelfAndChildren(Object itemId,boolean removeSelf) {
+	private void collapseSelfAndChildren(Object itemId,boolean removeSelf,List<Object> changedItems) {
 		if (removeSelf) {
 			visibleItems.remove(itemId);
 		}
+		if(expandedItems.remove(itemId)) {
+			changedItems.add(itemId);
+		}
 		if(hierachical.hasChildren(itemId)) {
 			hierachical.getChildren(itemId).forEach(child->{
-				collapseSelfAndChildren(child,true);
+				collapseSelfAndChildren(child,true,changedItems);
 			});
 		}
-	}
-	private void collapse(Object itemId) {
-		collapseSelfAndChildren(itemId,false);
-		List<Object> tmpItems = new ArrayList<Object>();
-		visibleItems.forEach(it -> {
-			if (it.equals(itemId)) {
-				expandedItems.remove(it);
-			}
-			if (hierachical.hasChildren(itemId)) {
-			Collection<?> children = hierachical.getChildren(itemId);
-			// collapse item
-
-				if (!children.contains(it)) {
-					tmpItems.add(it);
-				}
-			}
-		});
 		
-		visibleItems = tmpItems;
+	}
+	private List<Object> collapse(Object itemId) {
+		List<Object> changedItems=new ArrayList<Object>();
+		collapseSelfAndChildren(itemId,false,changedItems);
 		fireItemSetChange();
+		return changedItems;
 	}
 	
 	private void init() {
