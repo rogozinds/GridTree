@@ -1,5 +1,8 @@
 package com.example.vaadintestgridtree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
 import com.example.vaadintestgridtree.widgetset.shared.CellWrapper;
 import com.vaadin.data.Container.Hierarchical;
@@ -23,9 +26,20 @@ public class GridTree extends Grid {
 		super.setContainerDataSource(container);
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
-		//expandedColumn.setConverter(new GridTreeConverter());
+		expandedColumn.setHeaderCaption("");
+		expandedColumn.setMinimumWidth(5.0);
 		addExpandColumnRenderer(expandedColumn);
-
+		reorderColumns();
+	}
+	private void reorderColumns() {
+		List<Object> propertyIds=new ArrayList<Object>();
+		propertyIds.add(EXPAND_COLUMN_ID);
+		container.getContainerPropertyIds().forEach(propId->{
+			if(!propId.equals(EXPAND_COLUMN_ID)) {
+				propertyIds.add(propId);
+			}
+		});
+		setColumnOrder(propertyIds.toArray());
 	}
 	private void addExpandColumnRenderer(Column column) {
 		

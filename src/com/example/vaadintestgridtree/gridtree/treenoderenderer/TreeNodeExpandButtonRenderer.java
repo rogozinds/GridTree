@@ -15,15 +15,15 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper>
 
 	@Override
     public JsonValue encode(CellWrapper value) {
-    	String cellValue=value.getValue();
+    	String cellValue="";
     	String caretDown=FontAwesome.CARET_DOWN.getHtml();
     	String caretRight=FontAwesome.CARET_RIGHT.getHtml();
     	if(value.hasChildren()) {
     		if(value.isExpanded()){
-    			cellValue=caretDown+" "+value.getValue();
+    			cellValue=caretDown;
     		}
     		else {
-    			cellValue=caretRight+" "+value.getValue();
+    			cellValue=caretRight;
     		}
     	}
     	final int INTEND = 19;
