@@ -76,9 +76,9 @@ public class VaadintestgridtreeUI extends UI {
 	private void initObjects(int nItems) {
 //		HierarchicalContainer container=createContainer(nItems);
 		HierarchicalContainer container=oldContainer();
-		grid= new GridTree(new GridTreeContainer(container));
+		grid= new GridTree(new GridTreeContainer(container),"id");
 		grid.setColumnReorderingAllowed(true);
-		grid.getColumns().get(0).setWidth(100.5);
+		grid.getColumns().get(0).setWidth(200.5);
 	}
 	
 	private HierarchicalContainer createContainer(int nItems) {

@@ -1,6 +1,7 @@
 package com.example.vaadintestgridtree;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
@@ -11,74 +12,64 @@ public class GridTree extends Grid {
 
 	Column expandedColumn;
 	GridTreeContainer container;
-	public static final String EXPAND_COLUMN_ID = "COLUMN_ID";
-	public GridTree(GridTreeContainer container) {
+	private Hashtable<Object, CellWrapper> idToWrappers=new Hashtable<Object, CellWrapper>();
+	private  String expandColumnId ;
+	/**
+	 * 
+	 * @param container
+	 * @param columnId - propertyId of the container which will have an expand button
+	 */
+	public GridTree(GridTreeContainer container,String columnId) {
 		super();
+		this.expandColumnId=columnId;
 		this.container=container;
-		CellWrapper defValue=new CellWrapper("bar", "0", false, false,0);
-		this.container.addContainerProperty(GridTree.EXPAND_COLUMN_ID, CellWrapper.class, defValue);
+		fillContainerWithCellWrappers();
 		setContainerDataSource(this.container);
-		saveItemIdsInGrid();
-		expandedColumn=getColumn(EXPAND_COLUMN_ID);
-		expandedColumn.setHeaderCaption("");
+		expandedColumn=getColumn(columnId);
 		addExpandColumnRenderer(expandedColumn);
 		reorderColumns();
 	}
-	private void reorderColumns() {
-		List<Object> propertyIds=new ArrayList<Object>();
-		propertyIds.add(EXPAND_COLUMN_ID);
-		container.getContainerPropertyIds().forEach(propId->{
-			if(!propId.equals(EXPAND_COLUMN_ID)) {
-				propertyIds.add(propId);
-			}
-		});
-		setColumnOrder(propertyIds.toArray());
-	}
-	private void addExpandColumnRenderer(Column column) {
-		
-		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(CellWrapper.class);
-		renderer.addClickListener(e->{
-			Object itemId=e.getItemId();
-			List<Object>changedItems=container.toogleCollapse(itemId);
-			changedItems.forEach(it->{
-				CellWrapper cw=(CellWrapper) container.getItem(it).getItemProperty(EXPAND_COLUMN_ID).getValue();
-				cw.setIsExpanded(container.isItemExpanded(it));
-			});
-		});
-		column.setRenderer(renderer);
-	}
-	private void saveItemIdsInGrid(){
+	private void fillContainerWithCellWrappers() {
 		container.getItemIds().forEach(id->{
-			
 			String value = id.toString();
 			Boolean hasChildren=container.hasChildren(id);
 			Boolean isExpanded=container.isItemExpanded(id);
 			Integer level=container.getLevel(id);
 			CellWrapper cw=new CellWrapper(value, id, hasChildren, isExpanded,level);
-			container.getItem(id).getItemProperty(EXPAND_COLUMN_ID).setValue(cw);
+			idToWrappers.put(id, cw);
 		});	
+		container.removeContainerProperty(expandColumnId);
+		CellWrapper defValue=new CellWrapper("bar", "0", false, false,0);
+		this.container.addContainerProperty(expandColumnId, CellWrapper.class, defValue);
+		idToWrappers.forEach((k,v)->{
+			container.getItem(k).getItemProperty(expandColumnId).setValue(v);
+		});
+		
 	}
-//	private void createCellGenerator () {
-//	    this.setCellStyleGenerator(generator -> {
-//	    	if(EXPAND_COLUMN_ID.equals(generator.getPropertyId())) {
-//	    		Object propertyId=GridTree.EXPAND_COLUMN_ID;
-//	            Object itemId = (Object)generator.getItem().getItemProperty(propertyId).getValue();
-//	            boolean hasChildren=container.hasChildren(itemId);
-//	            boolean isExpanded=container.isItemExpanded(itemId);
-//	            if(hasChildren) {
-//		            if(isExpanded) {
-//		                return "v-tree-grid-node "+"expanded";
-//		            } else {
-//		                return "v-tree-grid-node "+"collapsed";
-//		            }
-//	            }
-//	            else {
-//	            	return null;
-//	            }
-//	        }else {
-//	            return null;
-//	        }
-//	    });
-//	}
+
+	private void reorderColumns() {
+		List<Object> propertyIds=new ArrayList<Object>();
+		propertyIds.add(expandColumnId);
+		container.getContainerPropertyIds().forEach(propId->{
+			if(!propId.equals(expandColumnId)) {
+				propertyIds.add(propId);
+			}
+		});
+		setColumnOrder(propertyIds.toArray());
+	}
+	
+	private void addExpandColumnRenderer(Column column) {
+		TreeNodeExpandButtonRenderer renderer=new TreeNodeExpandButtonRenderer(CellWrapper.class);
+		renderer.addClickListener(e->{
+			Object itemId=e.getItemId();
+			List<Object>changedItems=container.toogleCollapse(itemId);
+			changedItems.forEach(it->{
+				CellWrapper cw=(CellWrapper) container.getItem(it).getItemProperty(expandColumnId).getValue();
+				cw.setIsExpanded(container.isItemExpanded(it));
+			});
+		});
+		column.setRenderer(renderer);
+	}
+
 
 }

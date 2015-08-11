@@ -17,7 +17,7 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper,
 	@Override
 	public void render(RendererCellReference cell, CellWrapper cellValue, HTML widget) {
 		final int INTEND_IN_PIXELS = 19;
-    	String value="";
+    	String value=cellValue.getValue();
     	if(cellValue.hasChildren()) {
     		if(!widget.getElement().getClassName().contains("v-tree-grid-node")) {
     			widget.getElement().addClassName("v-tree-grid-node");
