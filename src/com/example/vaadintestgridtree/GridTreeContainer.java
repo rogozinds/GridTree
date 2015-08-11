@@ -267,8 +267,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	@Override
 	public boolean addContainerProperty(Object propertyId, Class<?> type,
 			Object defaultValue) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return hierachical.addContainerProperty(propertyId, type, defaultValue);
 	}
 
 	@Override

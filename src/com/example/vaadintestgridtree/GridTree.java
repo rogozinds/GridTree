@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
 import com.example.vaadintestgridtree.widgetset.client.CellWrapper;
-import com.vaadin.data.Container.Hierarchical;
-import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Grid;
 
 public class GridTree extends Grid {
@@ -14,16 +12,12 @@ public class GridTree extends Grid {
 	Column expandedColumn;
 	GridTreeContainer container;
 	public static final String EXPAND_COLUMN_ID = "COLUMN_ID";
-	private void buildGridTreeContainer(Hierarchical hContainer) {
-		container=new GridTreeContainer(hContainer);
-	}
-
-	public GridTree(HierarchicalContainer hContainer) {
+	public GridTree(GridTreeContainer container) {
 		super();
+		this.container=container;
 		CellWrapper defValue=new CellWrapper("bar", "0", false, false,0);
-		hContainer.addContainerProperty(GridTree.EXPAND_COLUMN_ID, CellWrapper.class, defValue);
-		buildGridTreeContainer(hContainer);
-		super.setContainerDataSource(container);
+		this.container.addContainerProperty(GridTree.EXPAND_COLUMN_ID, CellWrapper.class, defValue);
+		setContainerDataSource(this.container);
 		saveItemIdsInGrid();
 		expandedColumn=getColumn(EXPAND_COLUMN_ID);
 		expandedColumn.setHeaderCaption("");
