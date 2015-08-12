@@ -29,7 +29,7 @@
 
 @import "../valo/valo.scss";
 
-@mixin vaadintestgridtree {
+@mixin gridtree {
   @include valo;
 
   	.v-tree-grid-node {

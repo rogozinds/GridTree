@@ -1,3 +1,8 @@
 Manifest-Version: 1.0
+Implementation-Title: GridTree
+Implementation-Version: 1.0.0.alpha1
+Vaadin-Widgetsets: org.vaadin.gridtree.widgetset.VaadintestgridtreeWid
+ getset
+Vaadin-Package-Version: 1
 Class-Path: 
 

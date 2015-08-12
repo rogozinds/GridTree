@@ -23,11 +23,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-@Theme("vaadintestgridtree")
+@Theme("gridtree")
 public class VaadintestgridtreeUI extends UI {
 	Grid grid;
 	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = VaadintestgridtreeUI.class, widgetset = "com.example.vaadintestgridtree.widgetset.VaadintestgridtreeWidgetset")
+	@VaadinServletConfiguration(productionMode = false, ui = VaadintestgridtreeUI.class, widgetset = "org.vaadin.gridtree.widgetset.VaadintestgridtreeWidgetset")
 	public static class Servlet extends VaadinServlet {
 	}
 
