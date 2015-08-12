@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree;
+package com.example.vaadintestgridtree.ui;
 
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;

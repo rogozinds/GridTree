@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.widgetset.client;
+package org.vaadin.gridtree.widgetset.client;
 
 import java.io.Serializable;
 

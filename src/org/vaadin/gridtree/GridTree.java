@@ -1,11 +1,12 @@
-package com.example.vaadintestgridtree;
+package org.vaadin.gridtree;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.example.vaadintestgridtree.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
-import com.example.vaadintestgridtree.widgetset.client.CellWrapper;
+import org.vaadin.gridtree.treenoderenderer.TreeNodeExpandButtonRenderer;
+import org.vaadin.gridtree.widgetset.client.CellWrapper;
+
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.ui.Grid;
 
@@ -13,7 +14,7 @@ public class GridTree extends Grid {
 
 	Column expandedColumn;
 	GridTreeContainer container;
-	private Hashtable<Object, CellWrapper> idToWrappers=new Hashtable<Object, CellWrapper>();
+	private Hashtable<Object, CellWrapper> itemIdToWrappers=new Hashtable<Object, CellWrapper>();
 	private  String expandColumnPropertyId ;
 	/**
 	 * 
@@ -32,19 +33,19 @@ public class GridTree extends Grid {
 	}
 	
 	private void fillContainerWithCellWrappers() {
-		idToWrappers.clear();
+		itemIdToWrappers.clear();
 		container.getItemIds().forEach(id->{
 			String value = id.toString();
 			Boolean hasChildren=container.hasChildren(id);
 			Boolean isExpanded=container.isItemExpanded(id);
 			Integer level=container.getLevel(id);
 			CellWrapper cw=new CellWrapper(value, id, hasChildren, isExpanded,level);
-			idToWrappers.put(id, cw);
+			itemIdToWrappers.put(id, cw);
 		});	
 		container.removeContainerProperty(expandColumnPropertyId);
 		CellWrapper defValue=new CellWrapper("", "0", false, false,0);
 		this.container.addContainerProperty(expandColumnPropertyId, CellWrapper.class, defValue);
-		idToWrappers.forEach((k,v)->{
+		itemIdToWrappers.forEach((k,v)->{
 			container.getItem(k).getItemProperty(expandColumnPropertyId).setValue(v);
 		});
 		

@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree.widgetset.client;
+package org.vaadin.gridtree.widgetset.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTML;

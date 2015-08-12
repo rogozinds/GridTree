@@ -1,4 +1,4 @@
-package com.example.vaadintestgridtree;
+package org.vaadin.gridtree;
 
 import java.util.Locale;
 

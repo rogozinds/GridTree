@@ -4,8 +4,9 @@ import java.util.Random;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.example.vaadintestgridtree.GridTree;
-import com.example.vaadintestgridtree.GridTreeContainer;
+import org.vaadin.gridtree.GridTree;
+import org.vaadin.gridtree.GridTreeContainer;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Item;

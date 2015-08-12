@@ -1,6 +1,7 @@
-	package com.example.vaadintestgridtree.gridtree.treenoderenderer;
+	package org.vaadin.gridtree.treenoderenderer;
 
-import com.example.vaadintestgridtree.widgetset.client.CellWrapper;
+import org.vaadin.gridtree.widgetset.client.CellWrapper;
+
 import com.vaadin.ui.renderers.ClickableRenderer;
 
 import elemental.json.JsonValue;
