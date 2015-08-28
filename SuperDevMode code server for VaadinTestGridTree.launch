@@ -7,7 +7,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.codeserver.CodeServer"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=" com.example.vaadintestgridtree.widgetset.VaadintestgridtreeWidgetset"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=" org.vaadin.gridtree.widgetset.VaadintestgridtreeWidgetset"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="VaadinTestGridTree"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xss8M -Xmx512M -XX:MaxPermSize=512M"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\erogdmi\Vaadin\VaadinTestGridTree"/>

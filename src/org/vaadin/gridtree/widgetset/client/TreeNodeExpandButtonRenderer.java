@@ -38,7 +38,7 @@ public class TreeNodeExpandButtonRenderer extends ClickableRenderer<CellWrapper,
     	
 		int intend=INTEND_IN_PIXELS*cellValue.getLevel();
 		widget.setHTML(value);
-		widget.getElement().getStyle().setProperty("padding-left", intend+"px");
+		widget.getElement().getStyle().setProperty("paddingLeft", intend+"px");
 	}
 
 }

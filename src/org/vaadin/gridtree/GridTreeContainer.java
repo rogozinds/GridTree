@@ -2,6 +2,7 @@ package org.vaadin.gridtree;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -299,7 +300,37 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 
 	@Override
 	public List<?> getItemIds(int startIndex, int numberOfItems) {
-		return visibleItems;
+	       if (startIndex < 0) {
+	            throw new IndexOutOfBoundsException(
+	                    "Start index cannot be negative! startIndex=" + startIndex);
+	        }
+
+	        if (startIndex > visibleItems.size()) {
+	            throw new IndexOutOfBoundsException(
+	                    "Start index exceeds container size! startIndex="
+	                            + startIndex + " containerLastItemIndex="
+	                            + (visibleItems.size() - 1));
+	        }
+
+	        if (numberOfItems < 1) {
+	            if (numberOfItems == 0) {
+	                return Collections.emptyList();
+	            }
+
+	            throw new IllegalArgumentException(
+	                    "Cannot get negative amount of items! numberOfItems="
+	                            + numberOfItems);
+	        }
+
+	        int endIndex = startIndex + numberOfItems;
+
+	        if (endIndex > visibleItems.size()) {
+	            endIndex = visibleItems.size();
+	        }
+
+	        return Collections.unmodifiableList(visibleItems.subList(
+	                startIndex, endIndex));
+
 	}
 
 	@Override
