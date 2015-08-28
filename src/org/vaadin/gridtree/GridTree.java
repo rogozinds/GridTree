@@ -12,7 +12,7 @@ import com.vaadin.ui.Grid;
 
 public class GridTree extends Grid {
 
-	Column expandedColumn;
+	private Column expandedColumn;
 	GridTreeContainer container;
 	private Hashtable<Object, CellWrapper> itemIdToWrappers=new Hashtable<Object, CellWrapper>();
 	private  String expandColumnPropertyId ;
@@ -31,7 +31,9 @@ public class GridTree extends Grid {
 		addExpandColumnRenderer(expandedColumn);
 		reorderColumns();
 	}
-	
+	public String getExpandColumnPropertyId() {
+		return expandColumnPropertyId;
+	}
 	private void fillContainerWithCellWrappers() {
 		itemIdToWrappers.clear();
 		container.getItemIds().forEach(id->{

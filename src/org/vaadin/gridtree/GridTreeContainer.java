@@ -13,7 +13,9 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier {
+import com.vaadin.data.util.HierarchicalContainer;
+public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier,
+Container.Sortable{
 
 	
 	private List<Object> visibleItems;
@@ -343,6 +345,41 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 			throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
+	}
+
+	private void copyItem(Object itemId,HierarchicalContainer iter) {
+		//implement
+		//add item to container
+	}
+	private void depthSort(Object parentId,HierarchicalContainer iter) {
+		copyItem(parentId,iter);
+		Collection<?> childrenId = iter.getChildren(parentId);
+//		// TODO Auto-generated method stub
+//		_items[] depthSort (_parent){
+//			  add _parent to _items[];
+//
+//			  get _children of _parent sorted by desired attribute;
+//
+//			  for every _item in _children
+//			      depthSort(_item);
+//			}	
+	}
+	@Override
+	public void sort(Object[] propertyId, boolean[] ascending) {
+		HierarchicalContainer tmp=new HierarchicalContainer();
+		hierachical.getItemIds()
+		List<Object> parentItemIds=null;//items of level 0
+		parentItems.forEach(par->{
+			depthSort(par);
+		});
+
+	}
+
+
+	@Override
+	public Collection<?> getSortableContainerPropertyIds() {
+		//Should exclude expandProperty id
+		return hierachical.getContainerPropertyIds();
 	}
 
 }
