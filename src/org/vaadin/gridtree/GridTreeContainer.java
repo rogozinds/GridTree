@@ -15,10 +15,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
 public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier {
 
-	
+
 	private List<Object> visibleItems;
-	private Set<Object> expandedItems;//all items are collapsed by default
-	private Hierarchical hierachical;
+	private final Set<Object> expandedItems;//all items are collapsed by default
+	private final Hierarchical hierachical;
+
 
 	public GridTreeContainer(Hierarchical hierachical){
 		this.hierachical = hierachical;
@@ -47,7 +48,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		}
 		return changedItems;
 	}
-	
+
 	public boolean hasChildren(Object itemId) {
 		return hierachical.hasChildren(itemId);
 	}
@@ -60,7 +61,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		return getLevel(itemId,0);
 	}
 	private int getLevel(Object itemId,int levelIter) {
-		Object parent=hierachical.getParent(itemId);
+		final Object parent=hierachical.getParent(itemId);
 		if(parent==null) {
 			return levelIter;
 		}
@@ -70,7 +71,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	}
 
 	/**
-	 * 
+	 *
 	 * @param itemId
 	 * @return true if item is expanded, false otherwise. Returns false also
 	 * if item doesn't have children.
@@ -81,21 +82,21 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	//Below this line internal stuff :)
 	//***************************************************************************
 	private void expand(Object itemId) {
-		List<Object> tmpItems = new ArrayList<Object>();
-		visibleItems.forEach(it -> {
+		final List<Object> tmpItems = new ArrayList<Object>();
+		for (final Object it : visibleItems) {
 			tmpItems.add(it);
 			// expand item
 				if (it.equals(itemId)) {
 					expandedItems.add(it);
-					hierachical.getChildren(itemId).forEach(child -> {
+					for(final Object child:hierachical.getChildren(itemId)) {
 						tmpItems.add(child);
-					});
+					};
 				}
-			});
+		}
 		visibleItems = tmpItems;
 		fireItemSetChange();
 	}
-	
+
 	private void collapseSelfAndChildren(Object itemId,boolean removeSelf,List<Object> changedItems) {
 		if (removeSelf) {
 			visibleItems.remove(itemId);
@@ -104,33 +105,33 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 			changedItems.add(itemId);
 		}
 		if(hierachical.hasChildren(itemId)) {
-			hierachical.getChildren(itemId).forEach(child->{
+			for(final Object child:hierachical.getChildren(itemId)) {
 				collapseSelfAndChildren(child,true,changedItems);
-			});
+			};
 		}
-		
+
 	}
 	private List<Object> collapse(Object itemId) {
-		List<Object> changedItems=new ArrayList<Object>();
+		final List<Object> changedItems=new ArrayList<Object>();
 		collapseSelfAndChildren(itemId,false,changedItems);
 		fireItemSetChange();
 		return changedItems;
 	}
-	
+
 	private void init() {
 		//store only items of the 0 level (those which don't have parents)
-		hierachical.getItemIds().forEach(it->{
+		for(final Object it: hierachical.getItemIds()){
 			if(hierachical.getParent(it)==null) {
 				visibleItems.add(it);
 			}
-		});
+		};
 	}
-	
+
 	@Override
 	public void addItemSetChangeListener(Container.ItemSetChangeListener listener) {
 		super.addItemSetChangeListener(listener);
 	}
-	
+
     @Override
 	public void removeItemSetChangeListener(Container.ItemSetChangeListener listener) {
     	super.removeItemSetChangeListener(listener);
@@ -145,11 +146,11 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
     public void addListener(Container.ItemSetChangeListener listener) {
         addItemSetChangeListener(listener);
     }
-	
-	
+
+
 	@Override
 	public Object nextItemId(Object itemId) {
-		int index=visibleItems.indexOf(itemId);
+		final int index=visibleItems.indexOf(itemId);
 		if(visibleItems.size()<=index) {
 			return null;
 		}
@@ -158,7 +159,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 
 	@Override
 	public Object prevItemId(Object itemId) {
-		int index=visibleItems.indexOf(itemId);
+		final int index=visibleItems.indexOf(itemId);
 		if(index<=0) {
 			return null;
 		}
@@ -290,7 +291,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 
 	@Override
 	public Object getIdByIndex(int index) {
-		if(index>=0 && index<visibleItems.size()) {
+		if((index>=0) && (index<visibleItems.size())) {
 			return visibleItems.get(index);
 		}
 		else {

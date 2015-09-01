@@ -11,6 +11,7 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -49,8 +50,12 @@ public class VaadintestgridtreeUI extends UI {
 		textField=new TextField();
 		textField.setValue(""+DEFAULT_ITEMS);
 
-		addButton=new Button("Generate",e->{
-			addItemsClick();
+		addButton=new Button("Generate",new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				addItemsClick();
+
+			}
 		});
 
 		initObjects(DEFAULT_ITEMS);
