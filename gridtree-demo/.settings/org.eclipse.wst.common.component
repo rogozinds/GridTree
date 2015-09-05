@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="org.vaadin.gridtree-demo">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/"/>
+        <property name="context-root" value="gridtree-demo"/>
+        <property name="component.exclusion.patterns" value="**/VAADIN/gwt-unitCache/**,**/VAADIN/widgetsets/WEB-INF/**,**/WEB-INF/lib/servlet-api-*.jar,**/WEB-INF/lib/vaadin-client-*.jar,**/WEB-INF/lib/jetty-*.jar,**/WEB-INF/lib/ant-*.jar,**/WEB-INF/classes/gwt-unitCache/**,**/WEB-INF/classes/themes/**,**/WEB-INF/classes/widgetsets/**"/>
+        <property name="java-output-path" value="/gridtree-demo/target/classes"/>
+    </wb-module>
+</project-modules>
