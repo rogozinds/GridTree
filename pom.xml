@@ -5,8 +5,8 @@
 	<groupId>org.vaadin</groupId>
 	<artifactId>gridtree-root</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>MyComponent Add-on Root Project</name>
+	<version>1.0.3.alpha3</version>
+	<name>GridTree</name>
 
 	<modules>
 		<module>gridtree</module>
