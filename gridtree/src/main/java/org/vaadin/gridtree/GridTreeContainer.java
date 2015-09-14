@@ -8,7 +8,8 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-import org.vaadin.gridtree.treenoderenderer.SortBy;
+import org.vaadin.gridtree.org.vaadin.gridtree.sort.SortBy;
+import org.vaadin.gridtree.org.vaadin.gridtree.sort.Utils;
 
 public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier, Container.Sortable {
 
@@ -18,6 +19,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	private List<Object> visibleItems;
 	private final Set<Object> expandedItems;//all items are collapsed by default
 	private final Hierarchical hierachical;
+	SortBy sortBy;
 
 
 	public GridTreeContainer(Hierarchical hierachical){
@@ -354,41 +356,15 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 		throw new UnsupportedOperationException();
 	}
 
-	SortBy sortBy;
-	int compareByProperty(Object propertyId,Object id1,Object id2,boolean asc) {
-		Class type = getItem(id1).getItemProperty(propertyId).getType();
-		Comparable obj1=(Comparable) getItem(id1).getItemProperty(propertyId).getValue();
-		Comparable obj2=(Comparable)getItem(id2).getItemProperty(propertyId).getValue();
-		if(asc) {
-			return obj1.compareTo(obj2);
-		}
-		else {
-			return obj2.compareTo(obj1);
-		}
 
-	}
-	public void sortInternal(List<Object> itemIds) {
-		Collections.sort(itemIds, new Comparator<Object>() {
-			@Override
-			public int compare(Object id1, Object id2) {
-				for(int i=0;i<sortBy.getProperties().length;i++) {
-					boolean asc=sortBy.getAsc()[i];
-					int result=compareByProperty(sortBy.getProperties()[i],id1,id2,asc);
-					//if equal for one property compare for next one
-					if(result!=0) {
-						return result;
-					}
-				}
-				return 0;
-			}
-		});
-	}
-	public void sortInternalRequirsevly(List<Object> itemIds) {
-		sortInternal(itemIds);
+
+	public void sortInternalRecursively(List<Object> itemIds) {
+		Utils sortUtils=new Utils(hierachical);
+		sortUtils.sortItems(itemIds, sortBy);
 		for(Object item: itemIds) {
 			List<Object> childrenId=children.get(item);
 			if(childrenId!=null) {
-				sortInternalRequirsevly(childrenId);
+				sortInternalRecursively(childrenId);
 			}
 		}
 	}
@@ -404,7 +380,7 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	@Override
 	public void sort(Object[] propertyId, boolean[] ascending) {
 		sortBy=new SortBy(propertyId,ascending);
-		sortInternalRequirsevly(parents);
+		sortInternalRecursively(parents);
 
         final List<Object> tmpItems = new ArrayList<Object>();
 

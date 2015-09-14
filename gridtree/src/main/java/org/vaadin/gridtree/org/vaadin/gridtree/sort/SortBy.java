@@ -1,4 +1,4 @@
-package org.vaadin.gridtree.treenoderenderer;
+package org.vaadin.gridtree.org.vaadin.gridtree.sort;
 
 /**
  * Created by erogdmi on 9/14/2015.
