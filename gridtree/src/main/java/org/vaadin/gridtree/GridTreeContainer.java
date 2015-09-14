@@ -1,11 +1,6 @@
 package org.vaadin.gridtree;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Indexed;
@@ -13,9 +8,13 @@ import com.vaadin.data.Container.ItemSetChangeNotifier;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.AbstractContainer;
-public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier {
+import org.vaadin.gridtree.treenoderenderer.SortBy;
+
+public class GridTreeContainer extends AbstractContainer implements Indexed, ItemSetChangeNotifier, Container.Sortable {
 
 
+	private List<Object> parents=new ArrayList<Object>();
+	private Map<Object,List<Object>> children=new HashMap<Object, List<Object>>();
 	private List<Object> visibleItems;
 	private final Set<Object> expandedItems;//all items are collapsed by default
 	private final Hierarchical hierachical;
@@ -88,9 +87,11 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 			// expand item
 				if (it.equals(itemId)) {
 					expandedItems.add(it);
-					for(final Object child:hierachical.getChildren(itemId)) {
-						tmpItems.add(child);
-					};
+                    if(children.containsKey(itemId)) {
+					    for(Object child:children.get(itemId)) {
+                            tmpItems.add(child);
+                        }
+                    }
 				}
 		}
 		visibleItems = tmpItems;
@@ -121,9 +122,16 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 	private void init() {
 		//store only items of the 0 level (those which don't have parents)
 		for(final Object it: hierachical.getItemIds()){
-			if(hierachical.getParent(it)==null) {
+			Object parent=hierachical.getParent(it);
+            if(parent==null) {
 				visibleItems.add(it);
-			}
+                parents.add(it);
+			} else {
+                if(!children.containsKey(parent)) {
+                    children.put(parent,new ArrayList<Object>());
+                }
+                children.get(parent).add(it);
+            }
 		};
 	}
 
@@ -344,6 +352,75 @@ public class GridTreeContainer extends AbstractContainer implements Indexed, Ite
 			throws UnsupportedOperationException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
+	}
+
+	SortBy sortBy;
+	int compareByProperty(Object propertyId,Object id1,Object id2,boolean asc) {
+		Class type = getItem(id1).getItemProperty(propertyId).getType();
+		Comparable obj1=(Comparable) getItem(id1).getItemProperty(propertyId).getValue();
+		Comparable obj2=(Comparable)getItem(id2).getItemProperty(propertyId).getValue();
+		if(asc) {
+			return obj1.compareTo(obj2);
+		}
+		else {
+			return obj2.compareTo(obj1);
+		}
+
+	}
+	public void sortInternal(List<Object> itemIds) {
+		Collections.sort(itemIds, new Comparator<Object>() {
+			@Override
+			public int compare(Object id1, Object id2) {
+				for(int i=0;i<sortBy.getProperties().length;i++) {
+					boolean asc=sortBy.getAsc()[i];
+					int result=compareByProperty(sortBy.getProperties()[i],id1,id2,asc);
+					//if equal for one property compare for next one
+					if(result!=0) {
+						return result;
+					}
+				}
+				return 0;
+			}
+		});
+	}
+	public void sortInternalRequirsevly(List<Object> itemIds) {
+		sortInternal(itemIds);
+		for(Object item: itemIds) {
+			List<Object> childrenId=children.get(item);
+			if(childrenId!=null) {
+				sortInternalRequirsevly(childrenId);
+			}
+		}
+	}
+    private void addParent(List items, Object parentId) {
+
+        if(children.containsKey(parentId) && isItemExpanded(parentId)) {
+            for(Object childId:children.get(parentId)){
+                items.add(childId);
+                addParent(items,childId);
+            }
+        }
+    }
+	@Override
+	public void sort(Object[] propertyId, boolean[] ascending) {
+		sortBy=new SortBy(propertyId,ascending);
+		sortInternalRequirsevly(parents);
+
+        final List<Object> tmpItems = new ArrayList<Object>();
+
+        for (Object itemId:parents) {
+            tmpItems.add(itemId);
+            addParent(tmpItems,itemId);
+        }
+        visibleItems=tmpItems;
+        fireItemSetChange();
+	}
+
+
+	@Override
+	public Collection<?> getSortableContainerPropertyIds() {
+		//Should exclude expandProperty id
+		return hierachical.getContainerPropertyIds();
 	}
 
 }
