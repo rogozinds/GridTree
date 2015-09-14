@@ -134,8 +134,10 @@ public class DemoUI extends UI
 			if((i%nLevels)==0) {
 
 			}
+			else if ((i%nLevels)==2) {
+				addParent(container,itemId,(i-2)+"");
+			}
 			else {
-				final String parent=(i-1)+"";
 				addParent(container,itemId,(i-1)+"");
 			}
 		}
