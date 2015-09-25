@@ -36,17 +36,16 @@ public class Utils {
         return hierachical.getItem(itemId);
     }
     private int compareByProperty(Object propertyId,Object id1,Object id2,boolean asc) {
-        if( ! (getItem(id1).getItemProperty(propertyId).getValue() instanceof  Comparable)) {
-            throw new RuntimeException("Property "+propertyId +" is not comparable");
+        if((getItem(id1).getItemProperty(propertyId).getValue() instanceof  Comparable)) {
+            Comparable obj1 = (Comparable) getItem(id1).getItemProperty(propertyId).getValue();
+            Comparable obj2 = (Comparable) getItem(id2).getItemProperty(propertyId).getValue();
+            if (asc) {
+                return obj1.compareTo(obj2);
+            } else {
+                return obj2.compareTo(obj1);
+            }
+        } else {
+            return 0;
         }
-        Comparable obj1=(Comparable) getItem(id1).getItemProperty(propertyId).getValue();
-        Comparable obj2=(Comparable)getItem(id2).getItemProperty(propertyId).getValue();
-        if(asc) {
-            return obj1.compareTo(obj2);
-        }
-        else {
-            return obj2.compareTo(obj1);
-        }
-
     }
 }

@@ -10,6 +10,9 @@
 /.externalToolBuilders
 /extras
 
+#Demo widgetset and themes
+/gridtree-demo/src/main/webapp/VAADIN/widgetsets/
+/gridtree-demo/src/main/webapp/VAADIN/themes/demo/styles.scss.cache
 # /WebContent/VAADIN/themes/base/
 /WebContent/VAADIN/themes/base/styles.css
 /WebContent/VAADIN/themes/base/legacy-styles.css
