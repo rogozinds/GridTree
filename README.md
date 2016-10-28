@@ -1,10 +1,9 @@
-# MyComponent Add-on for Vaadin 7
+# GridTree Add-on for Vaadin 7
 
-MyComponent is an UI component add-on for Vaadin 7.
+GridTree is an experimental UI component add-on for Vaadin 7. Adds an opportunity to add a hierarchcal container to the Grid
+component.
 
 ## Online demo
-
-Try the add-on demo at <url of the online demo>
 
 ## Download release
 
@@ -12,9 +11,9 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 
 ## Building and running demo
 
-git clone <url of the MyComponent repository>
+git clone <url of the GridTree repository>
 mvn clean install
-cd demo
+cd grdtree-demo
 mvn jetty:run
 
 To see the demo, navigate to http://localhost:8080/
