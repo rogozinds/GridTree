@@ -11,9 +11,10 @@ Official releases of this add-on are available at Vaadin Directory. For Maven in
 
 ## Building and running demo
 
-git clone <url of the GridTree repository>
 mvn clean install
+
 cd grdtree-demo
+
 mvn jetty:run
 
 To see the demo, navigate to http://localhost:8080/
